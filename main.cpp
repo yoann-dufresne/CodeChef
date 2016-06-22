@@ -3,24 +3,30 @@
 
 using namespace std;
 
+
 int main () {
-	int N;
+	int nbChews, hardness;
 
-	cin >> N;
-	int values [N] = {};
-	for (int i=0 ; i<N ; i++)
-		cin >> values[i];
+	cin >> nbChews >> hardness;
+	int chews [nbChews] = {};
+	for (int i=0 ; i<nbChews ; i++)
+		cin >> chews[i];
 
-	sort (values, values+N);
+	sort(chews, chews+nbChews);
 
-	long long val=0;
-	long long result=0;
-	for (int i=1 ; i<N ; i++) {
-		val = values[i] - values[i-1];
-		result += val * i * (N-i);
+	long long begin=0, end=nbChews-1;
+	long long sum = 0;
+	while (begin < end) {
+		if (chews[end] + chews[begin]>= hardness)
+			end--;
+		else if (chews[end] + chews[begin+1] < hardness)
+			begin++;
+		else {
+			sum += begin+1;
+			end--;
+		}
 	}
+	sum += end*(end+1)/2;
 
-	cout << result << endl;
-
-	return 0;
+	cout << sum << endl;
 }
