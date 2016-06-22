@@ -4,38 +4,46 @@
 using namespace std;
 
 int main () {
-	int N;
+	int nbStacks, maxHeight;
 
-	cin >> N;
+	cin >> nbStacks >> maxHeight;
+	int stacks[nbStacks] = {};
 
-	map<long long,long long> scores;
-	for (int i=0 ; i<N ; i++) {
-		long long val;
-		cin >> val;
+	for (int i=0 ; i<nbStacks ; i++)
+		cin >> stacks[i];
 
-		long nb = 1;
-		map<long long,long long>::iterator it = scores.find (val);
-		if (it != scores.end())  {
-			nb += it->second;
+	int position = 0;
+	bool isLoad = false;
+
+	int val;
+	while ((cin >> val) != 0) {
+		switch (val) {
+			case 1:
+				if (position != 0)
+					position--;
+			break;
+			case 2:
+				if (position != nbStacks-1)
+					position++;
+			break;
+			case 3:
+				if (!isLoad && stacks[position] > 0) {
+					isLoad = true;
+					stacks[position]--;
+				}
+			break;
+			case 4:
+				if (isLoad && stacks[position] < maxHeight) {
+					isLoad = false;
+					stacks[position]++;
+				}
+			break;
 		}
-
-		scores[val] = nb;
 	}
 
-	long long sum = 0;
-	long long max = 0;
-	map<long long,long long>::iterator it = scores.end();
-	do {
-		it--;
-
-		sum += it->second;
-		long long val = it->first * sum;
-
-		if (val > max)
-			max = val;
-	} while (it != scores.begin());
-
-	cout << max << endl;
+	for (int i=0 ; i<nbStacks ; i++)
+		cout << stacks[i] << ' ';
+	cout << endl;
 
 	return 0;
 }
