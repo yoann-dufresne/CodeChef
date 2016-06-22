@@ -1,49 +1,26 @@
 #include <iostream>
-#include <map>
+#include <algorithm>
 
 using namespace std;
 
 int main () {
-	int nbStacks, maxHeight;
+	int N;
 
-	cin >> nbStacks >> maxHeight;
-	int stacks[nbStacks] = {};
+	cin >> N;
+	int values [N] = {};
+	for (int i=0 ; i<N ; i++)
+		cin >> values[i];
 
-	for (int i=0 ; i<nbStacks ; i++)
-		cin >> stacks[i];
+	sort (values, values+N);
 
-	int position = 0;
-	bool isLoad = false;
-
-	int val;
-	while ((cin >> val) != 0) {
-		switch (val) {
-			case 1:
-				if (position != 0)
-					position--;
-			break;
-			case 2:
-				if (position != nbStacks-1)
-					position++;
-			break;
-			case 3:
-				if (!isLoad && stacks[position] > 0) {
-					isLoad = true;
-					stacks[position]--;
-				}
-			break;
-			case 4:
-				if (isLoad && stacks[position] < maxHeight) {
-					isLoad = false;
-					stacks[position]++;
-				}
-			break;
-		}
+	long long val=0;
+	long long result=0;
+	for (int i=1 ; i<N ; i++) {
+		val = values[i] - values[i-1];
+		result += val * i * (N-i);
 	}
 
-	for (int i=0 ; i<nbStacks ; i++)
-		cout << stacks[i] << ' ';
-	cout << endl;
+	cout << result << endl;
 
 	return 0;
 }
